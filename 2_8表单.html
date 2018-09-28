@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello World</title>
-    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    
-    <!-- Don't use this in production: -->
-    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="text/babel">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello World</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
       // 如果想让表单进行跳转,直接用html的dom就可以了
 
       // 如果想截取数据,并执行类似ajax的操作的话, 就需要使用到受控组件
@@ -41,7 +43,7 @@
             <form onSubmit={this.handleSubmit}>
               <label>
                 name:
-                <input type="text" name="name" onChange={this.handleChange}/>  
+                <input type="text" name="name" value={this.state.inputValue} onChange={this.handleChange}/>  
               </label>  
               <input type="submit" />
             </form>
@@ -51,7 +53,7 @@
       ReactDOM.render(<Form />, document.getElementById('root'));
 
       // 处理多个input的受控组件
-      class MultiInputForm extends React.Components{
+      class MultiInputForm extends React.Component{
         constructor(props) {
           super(props)
           this.state = {
@@ -72,11 +74,11 @@
             <form>
               <label>
                 name:
-                <input type="text" name="name" onChange={this.handleInputChange}/>  
+                <input type="text" name="name" value={this.state.value} onChange={this.handleInputChange}/>  
               </label>  
               <label>
                 name:
-                <input type="text" name="pwd" onChange={this.handleInputChange}/>  
+                <input type="text" name="pwd" value={this.state.pwd} onChange={this.handleInputChange}/>  
               </label>  
               <input type="submit" />
             </form>
@@ -85,7 +87,7 @@
       }
       // 另外如果给input设置了value, input将会锁定,无法改变
     </script>
-    <!--
+  <!--
       Note: this page is a great way to try React but it's not suitable for production.
       It slowly compiles JSX with Babel in the browser and uses a large development build of React.
 
@@ -98,5 +100,6 @@
       You can also use React without JSX, in which case you can remove Babel:
       https://reactjs.org/docs/react-without-jsx.html
     -->
-  </body>
+</body>
+
 </html>
