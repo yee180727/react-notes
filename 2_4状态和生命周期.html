@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 根据所学习的知识,如果想更新一个组件,就要使用ReactDOM.render()方法
+      // 为了让组件可以自己更新, 这里引入状态
+      
+      // 怎么添加一个状态
+      // 怎么es6接收参数
+      // 怎么更新状态
+      // 怎么使用生命周期
+
+      // 如果想使用状态, 首先将函数转化为类的声名方式
+      class Clock extends React.Component {
+        // 这里将使用到了父级传递的props
+        constructor(props) {
+          super(props);
+          // 添加一个本地状态到这个类
+          this.state = {
+            date: new Date(),
+            counter: 0,
+          }
+        }
+        // 生命周期函数
+        componentDidMount() {
+          this.timerID = setInterval(
+            () => this.tick(),
+          1000);
+        }
+        componentWillUnmount() {
+          // 可以通过这种方式像向这个类中添加其他字段
+          clearInterval(this.timerID);
+        }
+        tick() {
+          // 继承于React.Component的类中,调用过super方法将在this的原型上拥有setState方法
+          // setState方法可以改变组件内部的state
+
+          // 不要直接修改state中的属性,要使用this.setState这个方法
+          // React可以将多个setState()调用批处理为单个更新以提高性能
+          // 基于这种情况,所以不能通过state的值来改变state的值
+          // 为了修复这种情况, 我们使用另外一种方式
+          // 接受一个方法,这个方法会默认接受两个参数,一个是前置状态值,后面是props属性值
+          // 同样可以使用es5的原始方法
+          this.setState((prevState, props) => ({
+            counter: prevState.counter + props.increment
+          }));
+          this.setState({
+            date: new Date()
+          });
+        }
+        render() {
+          // 不再render()中使用到的值,就不应该出现在this.state中
+          return (
+            // 可以将state传递给其他react元素,或者用户自己定义的组件
+            <div>
+              <h1>Hello, world!</h1>
+              <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+              <h3>{this.state.counter}</h3>
+            </div>
+          )
+          // 组件将会接收数据保存在props中,但是不知道这个数据是来自state,props或者手动输入
+        }
+      }
+      // 组件有没有状态被称为组件实现的具体细节,可能随着系统的运行而变化
+      // 可以在无状态的组件中使用有状态的组件, 也可以在有状态的组件中使用无状态的组件
+      
+      ReactDOM.render(<Clock increment={1}/>, document.getElementById('root'));
+      
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

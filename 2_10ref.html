@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // class MyComponent extends React.Component {
+      //   constructor(props) {
+      //     super(props);
+      //     this.state = {
+            
+      //     }
+      //     this.input = React.createRef();
+      //     this.handleClick = this.handleClick.bind(this);
+
+      //   }
+      //   handleClick() {
+      //     console.log(this.input.current.value);
+      //   }
+      //   render() {
+      //     return (
+      //       <div>
+      //         <input type="text" ref={this.input}/>
+      //         <button onClick={this.handleClick}>click</button>
+      //       </div>
+      //     )
+      //   }
+      // }
+      // ReactDOM.render(<MyComponent />, document.getElementById('root'));
+      
+
+      // 父组件通过ref获取子组件,并且可以直接触发子组件内部的事件处理函数
+      class Son extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            cont: 'my name is zhaoyi'
+          }
+          this.handleClick = this.handleClick.bind(this);
+        }
+        handleClick(e) {
+          this.setState({
+            cont: 'welcome to this demo'
+          })
+        }
+        render() {
+          return (
+            <div>
+              <p onClick={this.handleClick}>
+                {this.state.cont};
+              </p>
+            </div>
+          )
+        }
+      }
+      class Father extends React.Component {
+        constructor(props) {
+          super(props);
+          this.son = React.createRef()
+          this.handleClick = this.handleClick.bind(this);
+        }
+        handleClick() {
+          this.son.current.handleClick();
+        }
+        render() {
+          return (
+            <div>
+              <Son ref={this.son}/>
+              <button onClick={this.handleClick}>click</button>
+            </div>
+          )
+        }
+      }
+      ReactDOM.render(<Father />, document.getElementById('root'));
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

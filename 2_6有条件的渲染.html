@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 在组件中添加条件,控制其他组件是否渲染
+      function UserGreeting(props) {
+        return <h1>Welcome back!</h1>;
+      }
+
+      function GuestGreeting(props) {
+        return <h1>Please sign up!</h1>;
+      }
+      // function Greeting(props) {
+      //   const isLoggedIn = props.isLoggedIn;
+      //   if (isLoggedIn) {
+      //     return <UserGreeting />;
+      //   }
+      //   return <GuestGreeting />;
+      // }
+      class Greeting extends React.Component{
+        constructor(props) {
+          super(props);
+          this.state = {
+            isLoggedIn: false,
+          }
+          this.handleClick = this.handleClick.bind(this);
+        }
+        handleClick() {
+          this.setState(prevState => {
+            return {
+              isLoggedIn: !prevState.isLoggedIn
+            }
+          })
+        }
+        // render() {
+        //   if (this.state.isLoggedIn) {
+        //     return (
+        //       <div>
+        //         <button onClick={this.handleClick}>toggle</button>
+        //         <UserGreeting />
+        //       </div>
+        //     );
+        //   } else {
+        //     return (
+        //       <div>
+        //         <button onClick={this.handleClick}>toggle</button>
+        //         <GuestGreeting />
+        //       </div>
+        //     );
+        //   }
+        // }
+        // 上面这种写法就不是很高明了, 可以使用一个变量来接收jsx表达式,这样就可以更方便的使用
+        render() {
+          let button;
+          if (this.state.isLoggedIn) {
+            button = <UserGreeting />;
+          } else {
+            button = <GuestGreeting />;
+          }
+          return (
+            <div>
+              <button onClick={this.handleClick}>toggle</button>
+              {button}
+            </div>
+          )
+        }
+      }
+
+      ReactDOM.render(
+        // Try changing to isLoggedIn={true}:
+        <Greeting/>,document.getElementById('root')
+      );
+      
+      // 使用 && 符号作为行内if的替代 &&后面使用React元素
+      // 整个式子用{}包裹起来,因为是个表达式
+      // {unreadMessages.length > 0 &&
+      //   <h2>
+      //     You have {unreadMessages.length} unread messages.
+      //   </h2>
+      // }
+      // 内联if-else用三目运算符替代
+      // {isLoggedIn ? (
+      //   <LogoutButton onClick={this.handleLogoutClick} />
+      // ) : (
+      //   <LoginButton onClick={this.handleLoginClick} />
+      // )}
+
+
+      // 防止组件渲染
+      // 父级组件使用传递一个state的值, 来控制子组件是否渲染
+      // function WarningBanner(props) {
+      //   if (!props.warn) {
+      //     return null;
+      //   }
+
+      //   return (
+      //     <div className="warning">
+      //       Warning!
+      //     </div>
+      //   );
+      // }
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

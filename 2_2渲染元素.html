@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 我们将这个div#root称为根节点, 因为其中的所有内容都将由ReactDOM管理
+
+      // 如果想将React元素呈现到根节点, 将React元素和根节点都传递到ReactDOM.render()
+
+      const element = <h1>hello, world</h1>
+      ReactDOM.render(element, document.getElementById('root'));
+
+      // 更新渲染元素
+      // React元素是不可变的, 创建元素后, 将无法更改它的子元素或者属性
+      // 根据现在有的知识, 如果想更新页面的元素, 只能从新调用ReactDOM.render()
+      function tick() {
+        const element = (
+          <div>
+            <h1>hello, world</h1>
+            <h2>It is {new Date().toLocaleTimeString()}</h2>  
+          </div>
+        )
+        ReactDOM.render(element, document.getElementById('root'));
+      }
+      setInterval(tick, 1000);
+     
+      // 从新更新的时候, 不是整个页面都从新进行渲染, React只会针对不同的部分进行更新
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+    // 生命周期函数的使用
+      class Father extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            count: 0,
+            name: 'zhaoyi'
+          }
+          this.handleClick = this.handleClick.bind(this);
+        } 
+        componentWillmount() {
+          console.log('Father : componentWillmount');
+        }
+        
+        componentDidMount() {
+          console.log('Father : componentDidMount');
+        }
+        
+        handleClick() {
+          this.setState((prevState, props) => ({
+            count: ++prevState.count,
+          }))
+        }
+        render() {
+          return (
+            <div>
+              <p>count:{this.state.count}</p>
+              <button onClick={this.handleClick}>Father component rerender</button>
+              <Son num={this.state.count}/>
+            </div>
+          )
+        }
+      }
+      class Son extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            sonCount: 0
+          }
+          this.handleClick = this.handleClick.bind(this);
+        } 
+        componentWillmount() {
+          console.log('Son : componentWillmount');
+        }
+        
+        componentDidMount() {
+          console.log('Son : componentDidMount');
+        }
+
+        
+        componentWillReceiveProps(nextProps) {
+          console.log("Son : componentWillReceiveProps");
+        }
+        
+        shouldComponentUpdate(nextProps, nextState) {
+          console.log('Son : shouldComponentUpdate');
+          return true;
+        }
+        
+        
+        componentWillUpdate(nextProps, nextState) {
+          console.log('Son: componentWillUpdate');
+        }
+        
+        componentDidUpdate(prevProps, prevState) {
+          console.log('Son: componentDidUpdate');
+        }
+        
+        
+        
+        
+        handleClick() {
+          this.setState((prevState, props) => ({
+            sonCount: ++prevState.sonCount,
+          }))
+        }
+        render() {
+          return (
+            <div>
+              <p>sonCount: {this.props.num}</p>
+              <p>sonCount: {this.state.sonCount}</p>
+              <button onClick={this.handleClick}>Son component rerender</button>
+            </div>
+          )
+        }
+      }
+      ReactDOM.render(<Father />, document.getElementById('root'));
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

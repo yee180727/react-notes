@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 渲染多个React元素
+      // 创建一个变量,接收一个React元素的数组
+      const numbers = [1,2,3,4,5,6];
+      const listItems = numbers.map((item) => {
+        return <li>{item}</li>
+      });
+
+      ReactDOM.render(<ul>{listItems}</ul>, document.getElementById('root'));
+
+      // 使用基本的列表组件
+      // 接收一个数组作为props的值, 在内部生成整个ul li结构
+      function NumberList(props) {
+        const numbers = props.numbers;
+        return (
+          <ul>
+            {numbers.map((item) => {
+              return <li>{item}</li>
+            })}  
+          </ul>
+        )
+      }
+
+      ReactDOM.render(<NumberList numbers={[1,2,3,4,5,6]}/>, document.getElementById('root'));
+      
+      // class MyComponent extends React.Component {
+      //   constructor(props) {
+      //     super(props);
+      //     this.state = {
+      //       componentsList : [1,2,3,4,5]
+      //     }
+      //   }
+      //   render() {
+      //     const listItems = this.state.componentsList.map((number) =>
+      //       <li>{number}</li>
+      //     );
+      //     return (
+      //       <ul>
+      //         {listItems}
+      //       </ul>
+      //     )
+      //   }
+      // }
+      
+      // ReactDOM.render(<MyComponent />, document.getElementById('root'));
+
+      // 使用键就可以提取组件
+      // 假如组件本身就是列表中的一项的话,这个key值应该设置在这个组件上,而不是组件内部的li上面
+
+      // 上面通过声名一个变量,再将这个变量插入到jsx的{}来完成列表渲染,
+      // 也可以使用下面这种形式, 直接再jsx的{} 中完成list的遍历
+      function NumberList2(props) {
+        const numbers = props.numbers;
+        return (
+          <ul>
+            {numbers.map((number) =>
+              <ListItem key={number.toString()}
+                        value={number} />
+
+            )}
+          </ul>
+        );
+      }
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

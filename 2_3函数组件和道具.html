@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello World</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+      // 定义组件最简单的方法是定义 JavaScript函数
+      // 始终使用大写字母启动组件名称, 非大写的组件将无法被识别成组件
+      function Welcome(props) {
+        // 这里用return返回一个jsx
+        return <h1>welcome, {props.name}</h1>;
+      }
+      // 普通react元素
+      const element1 = <h1>hello, world</h1>;
+      // 如果使用组件
+      // 创建道具, 或则直接创建一个React元素
+      // 可以通过直接使用jsx语法来获取到相应的函数组件
+      // 使用组件的时候,需要组件函数在范围内
+      // 当React看到表示用户定义组件的元素时，它将JSX属性作为单个对象传递给此组件。我们称这个对象为“道具”
+      const element2 = <Welcome name="zhaoyi"/>;
+      // 将这个道具使用ReactDOM.render的方法渲染到页面中去
+      ReactDOM.render(element2, document.getElementById('root'));
+
+
+      // 组成组件
+      // 组件可以引用其输出中的其他组件
+      // 例如，我们可以创建一个App渲染Welcome很多次的组件
+      function App() {
+        return (
+          <div>
+            <Welcome name="zhaoyi"/>
+            <Welcome name="liuyan"/>
+          </div>
+        );
+      }
+
+      // 提取组件
+      // 由于所有细节都在这个组件之中, 因此这个组件很难在其他场景进行应用
+      // 所以这里我们对这个组件进行提取, 这样就可以在其他地方使用到这些更小的组件
+      // function Comment1(props) {
+      //   return (
+      //     <div className="Comment">
+      //       <div className="UserInfo">
+      //         <img className="Avatar"
+      //           src={props.author.avatarUrl}
+      //           alt={props.author.name}
+      //         />
+      //         <div className="UserInfo-name">
+      //           {props.author.name}
+      //         </div>
+      //       </div>
+      //       <div className="Comment-text">
+      //         {props.text}
+      //       </div>
+      //       <div className="Comment-date">
+      //         {formatDate(props.date)}
+      //       </div>
+      //     </div>
+      //   );
+      // }
+      // 提取一个Avatar组件
+      function Avatar(props) {
+        return (
+          <img className="Avatar"
+            src={props.user.avatarUrl}
+            alt={props.user.name}
+          />
+        );
+      }
+      // 接下来提取一个UserInfo组件
+      function UserInfo(props) {
+        return (
+          <div className="UserInfo">
+            <Avatar user={props.user} />
+            <div className="UserInfo-name">
+              {props.user.name}
+            </div>
+          </div>
+        );
+      }
+      // 最后Comment变成的样子
+      function Comment(props) {
+        return (
+          <div className="Comment">
+            <UserInfo user={props.author} />
+            <div className="Comment-text">
+              {props.text}
+            </div>
+            <div className="Comment-date">
+              {props.date}
+            </div>
+          </div>
+        );
+      }
+
+      // 道具是只读的, 任何组件都不能修改自己的道具
+      // 所有组件在接到参数值之后,在函数内部都不允许对参数值进行改变
+      
+      // ReactDOM.render(<App/>, document.getElementById('root'));
+      ReactDOM.render(<Comment date={new Date().getHours()} text="hello, my name is zhaoyi" author={{
+          name: 'zhaoyi', 
+          avatarUrl: './timg.jpg'
+      }}/>, document.getElementById('root'))
+    </script>
+  <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+</body>
+
+</html>

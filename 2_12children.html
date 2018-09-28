@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class WelcomeDialog extends React.Component {
+        constructor(props) {
+          super(props);
+        }
+        render() {
+          return (
+            <div>
+              {this.props.children}
+            </div>
+          )
+        }
+      }
+      const element = (
+        <WelcomeDialog>
+          <h2>use children of props</h2>  
+        </WelcomeDialog>
+      )
+
+      ReactDOM.render(element, document.getElementById('root'));
+
+      // 当我们需要接收多个jsx标签的时候,可以通过自定义来接收这些组件
+      // 基于这些React元素也都是对象,所以可以想其他元素一样传递他们
+      class DoubleBar extends React.Component {
+        constructor(props) {
+          super(props);
+        }
+        render() {
+          return (
+            <div>
+              <div className="left">
+                {this.props.left}  
+              </div>
+              <div className="right">
+                {this.props.right}  
+              </div>
+            </div>
+          );
+        }
+      }
+      function App(props) {
+        return (
+          <div>
+            <DoubleBar left={<h2>left</h2>} right={<h2>right</h2>}></DoubleBar>
+          </div>
+        )
+      }
+      ReactDOM.render(<App />, document.getElementById('root'))
+
+      // 我们还可以将组件通用的接口抽离出来, 例如标题组件, 只有标题不同, 那么我们可以把标题当作参数传递进去
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>

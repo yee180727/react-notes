@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 属性值使用jsx的{}表达式语法, 里穿一个事件处理函数的函数名,如下形式
+      // const element = <button onClick={}>Activate Lasers</button>
+      // 如果想要取消默认参数
+      // 事件处理函数会被默认传递一个e的参数.使用e.preventDefault();来阻止默认行为
+      // 如果有其他参数的情况下, e会被放在最后
+
+      // 如果是函数组件,事件处理函数就直接定义在组件内部,使用的时候直接绑定函数名
+      function ActionLink() {
+        function handleClick(e) {
+          e.preventDefault();
+          console.log('The link was clicked.');
+        }
+
+        return (
+          <a href="#" onClick={handleClick}>
+            Click me
+          </a>
+        );
+      }
+      ReactDOM.render(<ActionLink/>, document.getElementById('root'));
+
+      // 使用ES6的类的模式定义组件的时候,常见模式是将事件处理函数作为类的处理方法
+      class Toggle extends React.Component{
+        constructor(props) {
+          super(props);
+          this.state = {
+            isToggleOn: true
+          }
+          // 这里的函数将会挂在prototype上面, 所以当调用该函数的时候需要绑定this到生成的对象上
+          // 对于this问题,有三种解决方案
+          // 方案一 在constructor里面注册
+          this.handleClick = this.handleClick.bind(this);
+        }
+        
+        handleClick() {
+          this.setState(prevState => ({
+            isToggleOn: !prevState.isToggleOn
+          }));
+        }
+        // 方案二使用公共类字段语法
+        click = () => {
+          console.log('this is:', this);
+        }
+        render() {
+          // 第三种方法就是在绑定的时候使用箭头函数
+          // 但是如果绑定的事件处理函数传递给了子组件, 那么有可能造成子组件发生额外的渲染
+          return (
+            <div>
+              <button onClick={this.handleClick}>{this.state.isToggleOn ? 'ON' : 'OFF'}</button>
+              <button onClick={this.click}>click me!</button>
+              <br/>
+              <button onClick={(e) => this.handleClick(e)}>
+                Click me
+              </button>
+            </div>
+          )
+        }
+      }
+      ReactDOM.render(<Toggle/>, document.getElementById('root'));
+      
+      // 传递参数给事件处理程序
+      class Counter extends React.Component{
+        constructor(props) {
+          super(props);
+          this.state = {
+            count: 0
+          }
+          // this.handleClick = this.handleClick.bind(this);
+        }
+        // 如果在函数内部需要使用到e, 在形参中写上e
+        handleClick(n, e) {
+          console.log(n, e);
+        }
+        render() {
+          // e这个参数会被系统自动的放在最后传递
+          // 如果使用箭头函数,这个e需要显示的传递
+          // 如果使用bind的方法,e会自动的传递过去
+          return (
+            <div>
+              <button onClick={(e) => this.handleClick(3, e)}>Delete Row</button>
+              <button onClick={this.handleClick.bind(this, 2)}>测试传递参数</button>
+            </div>
+          )
+        }
+      }
+      ReactDOM.render(<Counter/>, document.getElementById('root'));
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this section for a production-ready setup with JSX:
+      http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      http://reactjs.org/docs/create-a-new-react-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
+</html>
